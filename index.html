@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NVIDIA® GeForce RTX™ 50 시리즈</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green: #76b900;
+      --green-glow: #a0d400;
+      --dark: #080a0c;
+      --dark2: #0d1117;
+      --dark3: #111820;
+      --surface: #141c24;
+      --surface2: #1a2535;
+      --text: #e8edf2;
+      --text-muted: #8a9ab0;
+      --border: rgba(118,185,0,0.18);
+      --font-display: 'Orbitron', sans-serif;
+      --font-body: 'Noto Sans KR', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--dark);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-weight: 400;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--dark2); }
+    ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 3px; }
+
+    /* HEADER */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 68px;
+      background: rgba(8,10,12,0.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: var(--green);
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display);
+      font-size: 11px; font-weight: 900;
+      color: var(--dark); letter-spacing: -0.5px;
+    }
+    .logo-text { font-family: var(--font-display); font-size: 13px; font-weight: 800; color: var(--text); letter-spacing: 1px; }
+    .logo-text span { color: var(--green); }
+    nav { display: flex; gap: 2px; }
+    nav a {
+      color: var(--text-muted); text-decoration: none;
+      font-size: 13px; font-weight: 500;
+      padding: 8px 14px; border-radius: 4px;
+      transition: color .2s, background .2s;
+    }
+    nav a:hover { color: var(--green); background: rgba(118,185,0,0.08); }
+    .nav-cta { background: var(--green) !important; color: var(--dark) !important; font-weight: 700 !important; padding: 8px 18px !important; }
+    .nav-cta:hover { background: var(--green-glow) !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; background: none; border: none; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 1px; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 0;
+      padding: 88px 0 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 70% 50%, rgba(118,185,0,0.10) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 50% at 10% 80%, rgba(0,180,80,0.06) 0%, transparent 55%),
+        linear-gradient(160deg, var(--dark) 0%, var(--dark2) 100%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(118,185,0,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(118,185,0,0.05) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 80% 90% at 30% 50%, black 30%, transparent 80%);
+    }
+    .hero-left {
+      padding: 60px 5% 60px 7%;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-eyebrow {
+      font-family: var(--font-display);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 4px; color: var(--green);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .hero-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--green); opacity: .5; }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 4.4rem);
+      font-weight: 900; line-height: 1.05;
+      letter-spacing: -1px;
+      margin-bottom: 10px;
+    }
+    .hero h1 .line1 { color: var(--text); display: block; }
+    .hero h1 .line2 {
+      display: block;
+      background: linear-gradient(90deg, var(--green) 0%, var(--green-glow) 50%, #c8f000 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-series {
+      font-family: var(--font-display);
+      font-size: clamp(.85rem, 2vw, 1.3rem);
+      font-weight: 600; color: var(--text-muted);
+      letter-spacing: 6px; text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .hero-desc {
+      font-size: 1rem; color: var(--text-muted);
+      max-width: 460px; margin-bottom: 40px;
+      line-height: 1.85;
+    }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--green); color: var(--dark);
+      font-family: var(--font-body); font-size: 15px; font-weight: 700;
+      padding: 14px 36px; border: none; border-radius: 4px;
+      cursor: pointer; text-decoration: none; letter-spacing: .5px;
+      transition: background .2s, transform .15s, box-shadow .2s; display: inline-block;
+    }
+    .btn-primary:hover { background: var(--green-glow); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(118,185,0,0.35); }
+    .btn-outline {
+      background: transparent; color: var(--text);
+      font-family: var(--font-body); font-size: 15px; font-weight: 500;
+      padding: 13px 36px; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px;
+      cursor: pointer; text-decoration: none; letter-spacing: .5px;
+      transition: border-color .2s, color .2s, transform .15s; display: inline-block;
+    }
+    .btn-outline:hover { border-color: var(--green); color: var(--green); transform: translateY(-2px); }
+
+    /* HERO RIGHT — GPU IMAGE */
+    .hero-right {
+      position: relative; z-index: 2;
+      display: flex; align-items: center; justify-content: center;
+      height: 100%;
+      min-height: 520px;
+    }
+    .gpu-img-wrap {
+      position: relative;
+      width: 100%; max-width: 580px;
+    }
+    .gpu-img-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -30px;
+      background: radial-gradient(ellipse 70% 60% at 55% 50%, rgba(118,185,0,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .gpu-img-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 30px 80px rgba(118,185,0,0.22)) drop-shadow(0 0 40px rgba(0,0,0,0.7));
+      animation: floatGPU 5s ease-in-out infinite;
+    }
+    @keyframes floatGPU {
+      0%, 100% { transform: translateY(0px) rotate(-1deg); }
+      50%       { transform: translateY(-14px) rotate(1deg); }
+    }
+    /* badge overlays */
+    .gpu-badge {
+      position: absolute;
+      background: rgba(13,17,23,0.85);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      backdrop-filter: blur(10px);
+      animation: fadeInUp .6s ease forwards;
+      opacity: 0;
+    }
+    .gpu-badge:nth-child(2) { top: 12%; right: -2%; animation-delay: .4s; }
+    .gpu-badge:nth-child(3) { bottom: 20%; left: -2%; animation-delay: .7s; }
+    .gpu-badge:nth-child(4) { bottom: 8%; right: 5%; animation-delay: 1s; }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .badge-label { font-size: 10px; font-weight: 500; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; }
+    .badge-value { font-family: var(--font-display); font-size: 14px; font-weight: 800; color: var(--green); margin-top: 2px; }
+
+    /* SECTION BASE */
+    section { padding: 100px 5%; }
+    .section-label {
+      font-family: var(--font-display); font-size: 10px; font-weight: 600;
+      letter-spacing: 4px; color: var(--green); text-transform: uppercase;
+      margin-bottom: 14px; display: block;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2.8rem);
+      font-weight: 800; line-height: 1.2;
+      margin-bottom: 16px; letter-spacing: -.5px;
+    }
+    .section-desc { font-size: .98rem; color: var(--text-muted); max-width: 560px; line-height: 1.8; }
+    .divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); }
+
+    /* FEATURES */
+    #features { background: var(--dark2); }
+    .features-intro { max-width: 900px; margin: 0 auto 60px; text-align: center; }
+    .features-intro .section-desc { margin: 0 auto; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px; max-width: 1100px; margin: 0 auto;
+    }
+    .feature-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 32px 28px; position: relative; overflow: hidden;
+      transition: transform .25s, border-color .25s, box-shadow .25s;
+    }
+    .feature-card::after {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--green), transparent);
+      opacity: 0; transition: opacity .3s;
+    }
+    .feature-card:hover { transform: translateY(-6px); border-color: rgba(118,185,0,.35); box-shadow: 0 20px 60px rgba(0,0,0,.4); }
+    .feature-card:hover::after { opacity: 1; }
+    .feature-icon {
+      width: 48px; height: 48px;
+      background: rgba(118,185,0,.1); border: 1px solid rgba(118,185,0,.2); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 20px;
+    }
+    .feature-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 10px; letter-spacing: .5px; }
+    .feature-desc { font-size: .88rem; color: var(--text-muted); line-height: 1.75; }
+
+    /* ACCORDION */
+    #detail { background: var(--dark); max-width: 1100px; margin: 0 auto; padding: 100px 5%; }
+    #detail .section-title { margin-bottom: 40px; }
+    .toggle-btn {
+      width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+      padding: 22px 28px; display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; color: var(--text); font-family: var(--font-body); font-size: 1rem; font-weight: 600;
+      text-align: left; margin-bottom: 12px; transition: background .2s, border-color .2s; gap: 12px;
+    }
+    .toggle-btn:hover { background: var(--surface2); border-color: rgba(118,185,0,.3); }
+    .toggle-btn.open { border-color: var(--green); background: rgba(118,185,0,.05); border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+    .toggle-icon { flex-shrink: 0; width: 28px; height: 28px; border: 1px solid rgba(118,185,0,.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--green); transition: transform .3s; line-height: 1; }
+    .toggle-btn.open .toggle-icon { transform: rotate(45deg); }
+    .toggle-content { max-height: 0; overflow: hidden; transition: max-height .4s cubic-bezier(.4,0,.2,1); background: rgba(118,185,0,.03); border: 1px solid var(--green); border-top: none; border-radius: 0 0 10px 10px; margin-bottom: 12px; }
+    .toggle-content.open { max-height: 600px; }
+    .toggle-inner { padding: 28px; font-size: .93rem; color: var(--text-muted); line-height: 1.85; }
+    .toggle-inner strong { color: var(--green); font-weight: 600; }
+    .toggle-inner ul { padding-left: 20px; margin-top: 10px; }
+    .toggle-inner ul li { margin-bottom: 8px; }
+
+    /* REVIEWS */
+    #reviews { background: var(--dark2); }
+    .reviews-header { text-align: center; margin-bottom: 56px; }
+    .reviews-header .section-desc { margin: 0 auto; }
+    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; }
+    .review-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 28px; transition: transform .25s; }
+    .review-card:hover { transform: translateY(-4px); }
+    .review-stars { color: var(--green); font-size: 14px; letter-spacing: 2px; margin-bottom: 16px; }
+    .review-text { font-size: .9rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 20px; font-style: italic; }
+    .review-text::before { content: '"'; font-size: 1.2em; color: var(--green); }
+    .review-text::after  { content: '"'; font-size: 1.2em; color: var(--green); }
+    .review-author { display: flex; align-items: center; gap: 12px; }
+    .author-avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--green), #004400); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 13px; font-weight: 700; color: var(--dark); flex-shrink: 0; }
+    .author-info .name { font-size: .9rem; font-weight: 600; color: var(--text); }
+    .author-info .role { font-size: .78rem; color: var(--text-muted); }
+
+    /* CTA */
+    #contact { background: var(--dark); text-align: center; }
+    .cta-box {
+      max-width: 680px; margin: 0 auto;
+      background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
+      border: 1px solid rgba(118,185,0,.25); border-radius: 20px;
+      padding: 70px 48px; position: relative; overflow: hidden;
+    }
+    .cta-box::before {
+      content: ''; position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(118,185,0,.12), transparent 70%); pointer-events: none;
+    }
+    .cta-box .section-label { text-align: center; display: block; }
+    .cta-box .section-title { margin-bottom: 16px; }
+    .cta-box .section-desc { margin: 0 auto 36px; text-align: center; }
+    .cta-box .btn-primary { font-size: 16px; padding: 16px 48px; }
+
+    /* FOOTER */
+    footer { background: var(--dark2); border-top: 1px solid var(--border); padding: 56px 5% 32px; }
+    .footer-top { display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between; margin-bottom: 48px; }
+    .footer-brand { max-width: 300px; }
+    .footer-brand .logo { margin-bottom: 16px; }
+    .footer-brand p { font-size: .85rem; color: var(--text-muted); line-height: 1.75; }
+    .footer-links h4 { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--green); text-transform: uppercase; margin-bottom: 16px; }
+    .footer-links ul { list-style: none; }
+    .footer-links ul li { margin-bottom: 10px; }
+    .footer-links ul li a { font-size: .88rem; color: var(--text-muted); text-decoration: none; transition: color .2s; }
+    .footer-links ul li a:hover { color: var(--green); }
+    .footer-contact h4 { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--green); text-transform: uppercase; margin-bottom: 16px; }
+    .footer-contact p { font-size: .88rem; color: var(--text-muted); margin-bottom: 8px; }
+    .footer-contact a { color: var(--text-muted); text-decoration: none; transition: color .2s; }
+    .footer-contact a:hover { color: var(--green); }
+    .social-links { display: flex; gap: 10px; margin-top: 16px; }
+    .social-link { width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); text-decoration: none; font-size: 14px; transition: border-color .2s, color .2s, background .2s; }
+    .social-link:hover { border-color: var(--green); color: var(--green); background: rgba(118,185,0,.07); }
+    .footer-bottom { border-top: 1px solid var(--border); padding-top: 24px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; }
+    .footer-bottom p { font-size: .8rem; color: var(--text-muted); }
+    .footer-bottom span { color: var(--green); }
+
+    /* FADE ANIMATION */
+    .fade-up { opacity: 0; transform: translateY(30px); transition: opacity .65s ease, transform .65s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: 60px 7% 40px; text-align: center; }
+      .hero-left .hero-desc { margin-left: auto; margin-right: auto; }
+      .hero-left .hero-actions { justify-content: center; }
+      .hero-left .hero-eyebrow { margin-left: auto; margin-right: auto; }
+      .hero-right { min-height: 360px; padding: 0 7% 60px; }
+      .gpu-badge:nth-child(2) { top: 5%; right: 0; }
+      .gpu-badge:nth-child(3) { bottom: 15%; left: 0; }
+      .gpu-badge:nth-child(4) { bottom: 3%; right: 5%; }
+    }
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      nav { display: none; position: fixed; top: 68px; left: 0; right: 0; background: rgba(8,10,12,.97); backdrop-filter: blur(16px); flex-direction: column; padding: 20px 5%; border-bottom: 1px solid var(--border); gap: 4px; }
+      nav.open { display: flex; }
+      nav a { padding: 12px 16px; border-radius: 6px; }
+      .footer-top { flex-direction: column; }
+      .cta-box { padding: 48px 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a class="logo" href="#">
+    <div class="logo-icon">NV</div>
+    <span class="logo-text">NVIDIA <span>GeForce</span></span>
+  </a>
+  <button class="hamburger" id="hamburger" aria-label="메뉴 열기">
+    <span></span><span></span><span></span>
+  </button>
+  <nav id="main-nav">
+    <a href="#about">제품 소개</a>
+    <a href="#features">기능 보기</a>
+    <a href="#reviews">후기</a>
+    <a href="https://example.com/qna" class="nav-cta">문의하기</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="about">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <!-- LEFT: TEXT -->
+  <div class="hero-left">
+    <p class="hero-eyebrow">차세대 GPU 아키텍처</p>
+    <h1>
+      <span class="line1">GeForce RTX™</span>
+      <span class="line2">50 시리즈</span>
+    </h1>
+    <p class="hero-series">Blackwell Architecture</p>
+    <p class="hero-desc">
+      게이머와 크리에이터에게 속도 그 이상의 것을 제공합니다.<br>
+      신경망 렌더링과 AI가 결합된 완전히 새로운 차원의 성능을 경험하세요.
+    </p>
+    <div class="hero-actions">
+      <a href="https://example.com/qna" class="btn-primary">문의하기</a>
+      <a href="#features" class="btn-outline">기능 살펴보기</a>
+    </div>
+  </div>
+
+  <!-- RIGHT: GPU IMAGE -->
+  <div class="hero-right">
+    <div class="gpu-img-wrap">
+      <img src="그림1.jpg" alt="NVIDIA GeForce RTX 50 시리즈 GPU" />
+
+      <div class="gpu-badge">
+        <p class="badge-label">Architecture</p>
+        <p class="badge-value">Blackwell</p>
+      </div>
+      <div class="gpu-badge">
+        <p class="badge-label">AI 프레임 생성</p>
+        <p class="badge-value">DLSS 4.5 × 6</p>
+      </div>
+      <div class="gpu-badge">
+        <p class="badge-label">렌더링</p>
+        <p class="badge-value">DLSS 5</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="features-intro fade-up">
+    <span class="section-label">핵심 기능</span>
+    <h2 class="section-title">AI가 재정의한 렌더링</h2>
+    <p class="section-desc">NVIDIA Blackwell 아키텍처 기반의 RTX 50 시리즈는 게임과 창작의 경계를 허물며 전례 없는 성능을 선사합니다.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card fade-up">
+      <div class="feature-icon">⚡</div>
+      <p class="feature-title">DLSS 4.5 — 멀티 프레임 생성</p>
+      <p class="feature-desc">6배 멀티 프레임 생성으로 극도로 부드러운 화면을 구현하며, 동적 멀티 프레임 생성으로 목표 프레임 속도에 실시간으로 맞춥니다.</p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-icon">🧠</div>
+      <p class="feature-title">신경망 실시간 렌더링</p>
+      <p class="feature-desc">실사 같은 조명과 재질을 실시간으로 적용하는 신경망 렌더링 모델로 현실과 가상의 경계를 허뭅니다.</p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-icon">🎬</div>
+      <p class="feature-title">DLSS 5 — 할리우드급 그래픽</p>
+      <p class="feature-desc">렌더링과 현실 사이의 간극을 메우며, 이전에는 특수효과에서만 가능했던 수준의 사실적인 컴퓨터 그래픽을 게임에 구현합니다.</p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-icon">🎮</div>
+      <p class="feature-title">동적 프레임 배율</p>
+      <p class="feature-desc">게임 및 NVIDIA 앱이 게임 플레이 중 프레임 배율을 조정하여 디스플레이 새로 고침 빈도에 완벽하게 맞춥니다.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ACCORDION -->
+<div id="detail">
+  <span class="section-label">기능 상세</span>
+  <h2 class="section-title fade-up">기능 더보기</h2>
+
+  <button class="toggle-btn" onclick="toggleAccordion(this)" aria-expanded="false">
+    <span>DLSS 4.5 — 멀티 프레임 생성 및 동적 배율 상세</span>
+    <span class="toggle-icon">+</span>
+  </button>
+  <div class="toggle-content" role="region">
+    <div class="toggle-inner">
+      <strong>6배 멀티 프레임 생성(MFG)</strong>은 AI가 실제 렌더링 프레임 사이에 추가 프레임을 생성하여 출력 프레임 레이트를 극적으로 높입니다.
+      <ul>
+        <li>단순 2배가 아닌 <strong>6배</strong> 배율로 극도로 부드러운 모션 구현</li>
+        <li><strong>동적 멀티 프레임 생성</strong>: 실시간으로 배율을 조절해 V-Sync 및 목표 FPS 유지</li>
+        <li>게임·NVIDIA 앱 레벨에서 플레이어가 원하는 프레임 레이트에 자동 적응</li>
+        <li>레이턴시 최소화를 위한 NVIDIA Reflex와 통합</li>
+      </ul>
+    </div>
+  </div>
+
+  <button class="toggle-btn" onclick="toggleAccordion(this)" aria-expanded="false">
+    <span>신경망 실시간 렌더링 모델 상세</span>
+    <span class="toggle-icon">+</span>
+  </button>
+  <div class="toggle-content" role="region">
+    <div class="toggle-inner">
+      RTX 50 시리즈는 <strong>신경망 기반 실시간 렌더링</strong>을 통해 기존 래스터라이제이션의 한계를 돌파합니다.
+      <ul>
+        <li>셀 단위로 실사 조명, 전역 조명, 재질 반응을 신경망으로 추론</li>
+        <li>기존 레이 트레이싱 대비 <strong>훨씬 낮은 연산 비용</strong>으로 유사한 품질 달성</li>
+        <li>게임 씬의 복잡도와 무관하게 <strong>일관된 품질</strong> 유지</li>
+        <li>크리에이터 워크플로에도 동일하게 적용 가능</li>
+      </ul>
+    </div>
+  </div>
+
+  <button class="toggle-btn" onclick="toggleAccordion(this)" aria-expanded="false">
+    <span>DLSS 5 — 할리우드 특수효과 수준의 그래픽</span>
+    <span class="toggle-icon">+</span>
+  </button>
+  <div class="toggle-content" role="region">
+    <div class="toggle-inner">
+      <strong>DLSS 5</strong>는 렌더링 품질의 새로운 패러다임을 제시합니다.
+      <ul>
+        <li>이전까지 <strong>할리우드 특수효과 파이프라인</strong>에서만 구현 가능하던 사실적 CG를 실시간 게임에 구현</li>
+        <li>렌더링과 현실의 시각적 간극을 최소화하는 <strong>뉴럴 셰이딩</strong></li>
+        <li>게임 개발자가 더 적은 폴리곤으로 더 사실적인 결과물 생성 가능</li>
+        <li>차세대 AAA 타이틀에서 실질적인 영화급 퀄리티 게임플레이 경험</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="reviews-header fade-up">
+    <span class="section-label">사용 후기</span>
+    <h2 class="section-title">실제 사용자들의 이야기</h2>
+    <p class="section-desc">게이머부터 크리에이터까지, RTX 50 시리즈로 새로운 경험을 만나보세요.</p>
+  </div>
+  <div class="reviews-grid">
+    <article class="review-card fade-up">
+      <p class="review-stars">★★★★★</p>
+      <p class="review-text">DLSS 4.5 덕분에 4K 144fps 게임이 드디어 현실이 됐습니다. 이전 세대와 비교 자체가 안 됩니다.</p>
+      <div class="review-author">
+        <div class="author-avatar">KJ</div>
+        <div class="author-info"><p class="name">김지훈</p><p class="role">FPS 게이머 · 스트리머</p></div>
+      </div>
+    </article>
+    <article class="review-card fade-up">
+      <p class="review-stars">★★★★★</p>
+      <p class="review-text">3D 렌더링 작업 시간이 절반으로 줄었어요. 신경망 렌더링의 품질은 정말 놀라웠습니다.</p>
+      <div class="review-author">
+        <div class="author-avatar">PH</div>
+        <div class="author-info"><p class="name">박현아</p><p class="role">3D 아티스트 · 크리에이터</p></div>
+      </div>
+    </article>
+    <article class="review-card fade-up">
+      <p class="review-stars">★★★★★</p>
+      <p class="review-text">DLSS 5를 지원하는 게임의 그래픽은 진짜 영화를 보는 것 같습니다. 압도적인 차세대 경험이에요.</p>
+      <div class="review-author">
+        <div class="author-avatar">LM</div>
+        <div class="author-info"><p class="name">이민준</p><p class="role">하드코어 게이머</p></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CTA -->
+<section id="contact">
+  <div class="cta-box fade-up">
+    <span class="section-label">지금 시작하세요</span>
+    <h2 class="section-title">차세대 성능을<br>직접 경험해보세요</h2>
+    <p class="section-desc">NVIDIA® GeForce RTX™ 50 시리즈에 대한 궁금한 점이 있으신가요? 전문 상담팀이 최적의 솔루션을 안내해 드립니다.</p>
+    <a href="https://example.com/qna" class="btn-primary">문의하기 →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a class="logo" href="#"><div class="logo-icon">NV</div><span class="logo-text">NVIDIA <span>GeForce</span></span></a>
+      <p>NVIDIA® GeForce RTX™ 50 시리즈는 게이머와 크리에이터 모두를 위한 차세대 GPU입니다. AI 기반 렌더링으로 성능의 새 기준을 세웁니다.</p>
+    </div>
+    <div class="footer-links">
+      <h4>바로가기</h4>
+      <ul>
+        <li><a href="#about">제품 소개</a></li>
+        <li><a href="#features">기능 보기</a></li>
+        <li><a href="#detail">상세 기능</a></li>
+        <li><a href="#reviews">후기</a></li>
+      </ul>
+    </div>
+    <div class="footer-contact">
+      <h4>연락처</h4>
+      <p>📧 <a href="/cdn-cgi/l/email-protection#b1d8dfd7def1d4c9d0dcc1ddd49fd2dedc"><span class="__cf_email__" data-cfemail="aec7c0c8c1eecbd6cfc3dec2cb80cdc1c3">[email&#160;protected]</span></a></p>
+      <p>📞 <a href="tel:025551234">02-555-1234</a></p>
+      <p>🕐 평일 09:00 – 18:00</p>
+      <div class="social-links">
+        <a class="social-link" href="#" aria-label="X">𝕏</a>
+        <a class="social-link" href="#" aria-label="YouTube">▶</a>
+        <a class="social-link" href="#" aria-label="Instagram">◈</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 NVIDIA Corporation. All rights reserved.</p>
+    <p>NVIDIA®, GeForce®, RTX™ 및 <span>DLSS</span>는 NVIDIA Corporation의 상표입니다.</p>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  const hamburger = document.getElementById('hamburger');
+  const mainNav = document.getElementById('main-nav');
+  hamburger.addEventListener('click', () => mainNav.classList.toggle('open'));
+  mainNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mainNav.classList.remove('open')));
+
+  function toggleAccordion(btn) {
+    const content = btn.nextElementSibling;
+    const isOpen = btn.classList.contains('open');
+    document.querySelectorAll('.toggle-btn').forEach(b => { b.classList.remove('open'); b.setAttribute('aria-expanded','false'); });
+    document.querySelectorAll('.toggle-content').forEach(c => c.classList.remove('open'));
+    if (!isOpen) { btn.classList.add('open'); btn.setAttribute('aria-expanded','true'); content.classList.add('open'); }
+  }
+
+    const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
+
+  document.querySelectorAll('.fade-up').forEach((el, i) => {
+    el.style.transitionDelay = `${(i % 4) * 0.1}s`;
+    observer.observe(el);
+  });
+
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.fade-up:not(.visible)').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight) el.classList.add('visible');
+    });
+  });
+</script>
+</body>
+</html>
